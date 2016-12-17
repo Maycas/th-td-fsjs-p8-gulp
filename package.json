@@ -1,0 +1,32 @@
+{
+  "name": "frontend-gulp-builder",
+  "version": "1.0.0",
+  "description": "Treehouse Techdegree Project 8",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Maycas/th-td-fsjs-p8-gulp.git"
+  },
+  "keywords": [
+    "gulp",
+    "frontend"
+  ],
+  "author": "Marc Maycas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Maycas/th-td-fsjs-p8-gulp/issues"
+  },
+  "homepage": "https://github.com/Maycas/th-td-fsjs-p8-gulp#readme",
+  "devDependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-if": "^2.0.2",
+    "gulp-sass": "^3.0.0",
+    "gulp-sourcemaps": "^1.9.1",
+    "gulp-uglify": "^2.0.0",
+    "gulp-useref": "^3.1.2"
+  }
+}
