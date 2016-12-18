@@ -1,0 +1,9 @@
+# node modules
+node_modules
+
+# distribution folder
+dist/
+
+# Auto-generated files
+src/js/all.js
+src/js/all.js.map
