@@ -6,11 +6,10 @@ var gulp = require('gulp'),
     maps = require('gulp-sourcemaps'),
     rename = require('gulp-rename'),
     eslint = require('gulp-eslint'),
-    //sass = require('gulp-sass'),
-    //maps = require('gulp-sourcemaps'),
-    //useref = require('gulp-useref'),
+    sass = require('gulp-sass'),
+    csso = require('gulp-csso'),
+    useref = require('gulp-useref'),
     //imagemin = require('gulp-imagemin'),
-    //csso = require('gulp-csso'),
     //ifff = require('gulp-if'),
     del = require('del');
 
@@ -27,7 +26,7 @@ gulp.task('lint', function () {
     return gulp.src(options.src + '/js/**/*.js')
         .pipe(eslint())
         .pipe(eslint.format())
-        .pipe(eslint.failAfterError())
+        .pipe(eslint.failAfterError());
 });
 
 /**
@@ -53,5 +52,35 @@ gulp.task('scripts', ['concatScripts'], function () {
     return gulp.src(options.src + '/js/all.js')
         .pipe(uglify())
         .pipe(rename('all.min.js'))
-        .pipe(gulp.dest(options.dist + '/scripts'))
+        .pipe(gulp.dest(options.dist + '/scripts'));
+});
+
+/**
+ * TODO: Comments
+ */
+gulp.task('compileSass', function () {
+    return gulp.src(options.src + '/sass/global.scss')
+        .pipe(maps.init())
+        .pipe(sass())
+        .pipe(maps.write('./'))
+        .pipe(gulp.dest(options.src + '/css'));
+});
+
+/**
+ * TODO: Comments
+ */
+gulp.task('styles', ['compileSass'], function () {
+    return gulp.src(options.src + '/css/global.css')
+        .pipe(csso())
+        .pipe(rename('all.min.css'))
+        .pipe(gulp.dest(options.dist + '/styles'));
+});
+
+/**
+ * TODO: Comments
+ */
+gulp.task('html', ['scripts', 'compileSass'], function () {
+    return gulp.src(options.src + '/index.html')
+        .pipe(useref())
+        .pipe(gulp.dest(options.dist));
 });
