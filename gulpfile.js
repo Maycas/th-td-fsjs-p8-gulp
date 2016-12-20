@@ -11,6 +11,7 @@ var gulp = require('gulp'), // Gulp core
     usemin = require('gulp-usemin'), // Replaces references to non-optimized scripts or stylesheets into a set of HTML files
     imagemin = require('gulp-imagemin'), // Image optimizer
     replace = require('gulp-replace-path'), // Path replacer for html and text files
+    browserSync = require('browser-sync').create(),
     del = require('del'); // Delete package
 
 // Global options variable with the folder destinations
@@ -111,8 +112,32 @@ gulp.task('html', ['scripts', 'styles'], function () {
  * Builds the distribution folder and all the necessary files for development inside of the source folder
  */
 gulp.task('build', ['clean'], function () {
-    return gulp.start(['html', 'images']);
+    gulp.start(['html', 'images']);
 });
+
+/**
+ * 'watch' watches for any change in the javascript or css styles and runs the tasks again
+ */
+gulp.task('watch', function () {
+    gulp.watch([options.src + '/js/**/*.js'], ['scripts']);
+    gulp.watch([options.src + '/sass/**/*.scss', options.src + 'sass/**/*.sass'], ['styles']);
+});
+
+/**
+ * 'serve' runs the 'scripts' and 'styles' and serves the distribution folder through an HTTP server.
+ * In case any JS or SASS file has changed, then the browser is reloaded
+ */
+gulp.task('serve', ['scripts', 'styles'], function () {
+    browserSync.init({
+        server: {
+            baseDir: options.dist,
+            index: 'index.html'
+        }
+    });
+    gulp.start('watch');
+    gulp.watch([options.dist + '/**']).on('change', browserSync.reload);
+});
+
 
 /**
  * Gulp's 'default' task will run 'build'

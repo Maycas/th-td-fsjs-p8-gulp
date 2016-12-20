@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Maycas/th-td-fsjs-p8-gulp#readme",
   "devDependencies": {
+    "browser-sync": "^2.18.5",
     "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
