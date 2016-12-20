@@ -8,9 +8,9 @@ var gulp = require('gulp'),
     eslint = require('gulp-eslint'),
     sass = require('gulp-sass'),
     csso = require('gulp-csso'),
-    useref = require('gulp-useref'),
-    //imagemin = require('gulp-imagemin'),
-    //ifff = require('gulp-if'),
+    usemin = require('gulp-usemin'),
+    imagemin = require('gulp-imagemin'),
+    replace = require('gulp-replace-path'),
     del = require('del');
 
 // Global options variable with the folder destinations
@@ -79,8 +79,41 @@ gulp.task('styles', ['compileSass'], function () {
 /**
  * TODO: Comments
  */
-gulp.task('html', ['scripts', 'compileSass'], function () {
+gulp.task('images', function () {
+    return gulp.src(options.src + '/images/*')
+        .pipe(imagemin())
+        .pipe(gulp.dest(options.dist + '/content'));
+});
+
+/**
+ * TODO: Comments
+ */
+gulp.task('clean', function () {
+    del(['dist', options.src + '/css', options.src + '/js/all.js*']);
+});
+
+/**
+ * TODO: Comments !!! ERROR is here, in html
+ */
+gulp.task('html', ['scripts', 'styles'], function () {
     return gulp.src(options.src + '/index.html')
-        .pipe(useref())
+        .pipe(usemin({
+            js: [uglify()],
+            css: [csso()]
+        }))
+        .pipe(replace('images/', 'content/'))
         .pipe(gulp.dest(options.dist));
 });
+
+/**
+ * TODO: Comments
+ */
+gulp.task('build', ['clean'], function () {
+    //gulp.start(['scripts', 'styles', 'images']);
+    return gulp.start(['html', 'images']);
+});
+
+/**
+ * TODO: Comments
+ */
+gulp.task('default', ['build']);
