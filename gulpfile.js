@@ -1,17 +1,17 @@
 'use strict';
 
-var gulp = require('gulp'),
-    uglify = require('gulp-uglify'),
-    concat = require('gulp-concat'),
-    maps = require('gulp-sourcemaps'),
-    rename = require('gulp-rename'),
-    eslint = require('gulp-eslint'),
-    sass = require('gulp-sass'),
-    csso = require('gulp-csso'),
-    usemin = require('gulp-usemin'),
-    imagemin = require('gulp-imagemin'),
-    replace = require('gulp-replace-path'),
-    del = require('del');
+var gulp = require('gulp'), // Gulp core
+    uglify = require('gulp-uglify'), // Javascript minifier
+    concat = require('gulp-concat'), // File concatenator
+    maps = require('gulp-sourcemaps'), // Sourcemaps generator
+    rename = require('gulp-rename'), // File renaming plugin
+    eslint = require('gulp-eslint'), // JS lint plugin
+    sass = require('gulp-sass'), // SASS compiler
+    csso = require('gulp-csso'), // CSS minifier
+    usemin = require('gulp-usemin'), // Replaces references to non-optimized scripts or stylesheets into a set of HTML files
+    imagemin = require('gulp-imagemin'), // Image optimizer
+    replace = require('gulp-replace-path'), // Path replacer for html and text files
+    del = require('del'); // Delete package
 
 // Global options variable with the folder destinations
 var options = {
@@ -56,7 +56,7 @@ gulp.task('scripts', ['concatScripts'], function () {
 });
 
 /**
- * TODO: Comments
+ * 'compileSass' gets the global.scss file and compiles it into css inside the source folder
  */
 gulp.task('compileSass', function () {
     return gulp.src(options.src + '/sass/global.scss')
@@ -67,7 +67,7 @@ gulp.task('compileSass', function () {
 });
 
 /**
- * TODO: Comments
+ * 'styles' waits for 'compileSass' to finish and then minifies and moves it to the distribution folder
  */
 gulp.task('styles', ['compileSass'], function () {
     return gulp.src(options.src + '/css/global.css')
@@ -77,7 +77,7 @@ gulp.task('styles', ['compileSass'], function () {
 });
 
 /**
- * TODO: Comments
+ * 'images' gets all the images from the images folder and copies them into the content folder inside of the distribution folder
  */
 gulp.task('images', function () {
     return gulp.src(options.src + '/images/*')
@@ -86,14 +86,16 @@ gulp.task('images', function () {
 });
 
 /**
- * TODO: Comments
+ * 'clean' deletes all contents in the distribution folder and the files generated inside of the source folder
  */
 gulp.task('clean', function () {
     del(['dist', options.src + '/css', options.src + '/js/all.js*']);
 });
 
 /**
- * TODO: Comments !!! ERROR is here, in html
+ * 'html' waits for 'scripts' and 'styles' to finish and then replaces the styles and script URL's 
+ * in index.html with the new ones on distribution. Moreover it also changes the route of all images for 
+ * the new in the distribution folder
  */
 gulp.task('html', ['scripts', 'styles'], function () {
     return gulp.src(options.src + '/index.html')
@@ -106,14 +108,13 @@ gulp.task('html', ['scripts', 'styles'], function () {
 });
 
 /**
- * TODO: Comments
+ * Builds the distribution folder and all the necessary files for development inside of the source folder
  */
 gulp.task('build', ['clean'], function () {
-    //gulp.start(['scripts', 'styles', 'images']);
     return gulp.start(['html', 'images']);
 });
 
 /**
- * TODO: Comments
+ * Gulp's 'default' task will run 'build'
  */
 gulp.task('default', ['build']);
